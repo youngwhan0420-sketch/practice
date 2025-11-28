@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="entity.User">
+            <id property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="createDt" column="create_dt"/>
+        <result property="updateDt" column="update_dt"/>
+    </resultMap>
+
+    <resultMap id="UserRoleResultMap" type="entity.UserRole">
+        <id property="userRoleId" column="user_Role_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+
+    <resultMap id="RoleResultMap" type="entity.Role">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleNameKor" column="role_name_kor"/>
+    </resultMap>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into
+        user_tb
+        values
+        (0, #{username}, #{password}, #{email}, now(), null);
+    </insert>
+    <select id="getUserByUsername" resultMap="UserResultMap">
+        select
+            ut.user_id,
+            ut.username,
+            ut.password,
+            ut.email,
+            ut.create_dt,
+            ut.update_dt,
+
+            urt.user_role_id,
+            urt.user_id AS urt.user_id,
+            urt.role_id AS urt.role_id,
+
+            rt.role_id,
+            rt.role_name,
+            rt.role_name_kor
+        from
+            user_tb ut
+            join user_role_tb urt
+                (ut.user_id = urt.user_id)
+            role_tb rt
+            join user_role_tb urt
+                (rt.role_id = urt.role_id)
+        where
+            username =#{username}
+    </select>
+
+    <select id="getUserByUserId" resultMap="UserResultMap">
+        select
+            ut.user_id,
+            ut.username,
+            ut.password,
+            ut.email,
+            ut.create_dt,
+            ut.update_dt,
+
+            urt.user_role_id,
+            urt.user_id AS urt.user_id,
+            urt.role_id AS urt.role_id,
+
+            rt.role_id,
+            rt.role_name,
+            rt.role_name_kor
+        from
+            user_tb ut
+                join user_role_tb urt
+                    (ut.user_id = urt.user_id)
+            role_tb rt
+                join user_role_tb urt
+                    (rt.role_id = urt.role_id)
+        where
+        userId = #{userId}
+    </select>
+    <update id="updatePassword">
+        update
+        user_tb
+        set
+        password = #{password},
+        update_dt = now()
+        where
+        user_id = #{userId};
+    </update>
+
+</mapper>

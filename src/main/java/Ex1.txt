@@ -1,0 +1,22 @@
+1. 회원가입
+      - 아이디를 email로 username은 닉네임으로 사용
+      - 아이디인 email과 username 중복확인
+
+2. 로그인
+    - 로그인 시 AccessToken발급
+
+3. 닉네임 변경, 비밀번호 변경 구형
+
+4. securityConfig에서 각 API URL에 따라 인증 후 접근 다르게 적용
+
+5.이메일 인증 구현
+    - DB verify_tb에 user_id, verify_code추가(varchar(45))
+    - 회원가입시 랜덤 수 5자리 verify_code db에 저장
+    - 로그인 후 이메일 인증 요청 API로 요청이 오면 DB에 있던 코드 응답
+    - 해당 코드로 인증 요청, db의 코드와 일치시 role을 일반사용자로 수정
+
+
+
+1. mysql에서 테이블 작성 후 -> application.yml작성 -> entity(Role, User, UserRole)작성  -> SecurityConfig에서 보안설정
+2. user_mapper.xml, UserMapper생성 회원가입을 위해 UserMapper에 유저추가 메소드 작성하고 UserResultMap, UserRoleResultMap, RoleResultMap의 resultMap작성
+3.
