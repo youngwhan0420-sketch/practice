@@ -12,5 +12,14 @@ public class UserRepository {
     @Autowired
     private UserMapper userMapper;
 
-    public Optional<User>
+    public Optional<User> getUserByUsername (String username) {
+        return userMapper.getUserByUsername(username);
+    }
+    public Optional<User> getUserByUserId (Integer userId) {
+        return userMapper.getUserByUserId(userId);
+    }
+    public int updatePassword(User user) {
+        return userMapper.updatePassword(user);
+    }
+
 }
